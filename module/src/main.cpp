@@ -9,6 +9,7 @@
 #include "../include/HadesModApi.h"
 #include "HookTable.h"
 #include "MainMenuHandler.h"
+#include "GamemodeScreen.h"
 
 static std::unique_ptr<MainMenuHandler> mainMenuHandler;
 
@@ -20,6 +21,7 @@ HADES_MOD_API bool _cdecl HadesModInit(const IModApi *modApi) {
 
     HookTable::Instance().Init(modApi->GetSymbolAddress);
 
+    GamemodeScreen::initialize_vft();
     mainMenuHandler = std::make_unique<MainMenuHandler>();
     return true;
 };

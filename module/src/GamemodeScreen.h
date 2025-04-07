@@ -9,8 +9,11 @@
 
 class GamemodeScreen : public SGG::MenuScreen {
   public:
-    static GamemodeScreen *internal_constructor(SGG::ScreenManager *screenManager);
+    void iherited_constrictor();
+    static void initialize_vft();
 
-    private:
-    void Init();
+  private:
+    static SGG::ScreenType GetType_VirtImpl(GamemodeScreen *self);
+
+    void CreateComponents();
 };

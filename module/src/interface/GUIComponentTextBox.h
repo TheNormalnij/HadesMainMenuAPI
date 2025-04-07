@@ -9,9 +9,9 @@
 
 namespace SGG {
 
-class GUIComponentButton : public GUIComponent {
+class GUIComponentTextBox : public GUIComponent {
   private:
-    char pad[0x98];
+    char pad[0x2F0];
 };
-static_assert(sizeof(GUIComponentButton) == 0xA88, "Incorrect SGG::GUIComponentButton size");
+static_assert(sizeof(GUIComponentTextBox) == 0xCE0, "Incorrect SGG::GUIComponentTextBox size");
 } // namespace SGG

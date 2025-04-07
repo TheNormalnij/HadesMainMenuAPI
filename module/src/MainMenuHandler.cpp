@@ -9,6 +9,7 @@
 #include "HookTable.h"
 #include "interface/eastl_string.h"
 #include "GamemodeScreen.h"
+#include "HookedClassFactory.h"
 
 MainMenuHandler::MainMenuHandler() : funHook{(void *)HookTable::Instance().MainMenuScreen_MainMenuScreen, 12 } {
     funHook.Install();
@@ -24,7 +25,7 @@ void MainMenuHandler::InitializeCustomButtons() {
     auto exitBtnPos = exitBtn->GetLocation();
     exitBtn->SetLocation({exitBtnPos.mX, exitBtnPos.mY + 90});
 
-    auto *gamemodeBtn = SGG::GUIComponentButton::internal_constructor(mainMenuScreen);
+    auto *gamemodeBtn = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(mainMenuScreen);
     gamemodeBtn->Load(&exitBtn->GetComponentDara());
 
     gamemodeBtn->SetLocation(exitBtnPos);
@@ -38,8 +39,9 @@ void MainMenuHandler::InitializeCustomButtons() {
     gamemodeBtn->SetTextColor(0xFFCCCCCC);
 
     auto &clickHandler = gamemodeBtn->GetActivateAction();
-    clickHandler.AddCallBack([]() { 
-        //GamemodeScreen* gamemodeMenu = GamemodeScreen::internal_constructor();
+    clickHandler.AddCallBack([this]() {
+        auto *screenMamaner = this->mainMenuScreen->GetScreenManager();
+        GamemodeScreen *gamemodeMenu = HookedClassFactory::Create<GamemodeScreen>(screenMamaner);
+        screenMamaner->AddScreen(gamemodeMenu);
     });
 }
-

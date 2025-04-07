@@ -8,16 +8,45 @@
 #include "Vector2.h"
 #include "TimeSpan.h"
 #include "IRectangle.h"
+#include "ScreenManager.h"
 
 #include "../libs/EASTL-forge1.51/EABase/eabase.h"
 #include "../libs/EASTL-forge1.51/string.h"
 #include "../libs/EASTL-forge1.51/vector.h"
 
 namespace SGG {
-class ScreenManager;
 class InputHandler;
 enum class ScreenState : uint32_t;
-enum class ScreenType : uint32_t;
+
+enum class ScreenType : uint32_t {
+    Game = 0x1,
+    Menu = 0x3,
+    Ingameui = 0x7,
+    Shell = 0xB,
+    About = 0x1B,
+    Announcement = 0x2B,
+    DebugKey = 0x43,
+    ExitDialog = 0x83,
+    Gameplay = 0x101,
+    GameStart = 0x203,
+    Settings = 0x40B,
+    KeyMapping = 0xC0B,
+    Language = 0x100B,
+    Launch = 0x2003,
+    Load = 0x4003,
+    LoadMap = 0x8003,
+    LoadSave = 0x10003,
+    MainMenu = 0x20003,
+    MessageDialog = 0x40003,
+    PatchNotes = 0x8000B,
+    Pause = 0x100003,
+    Profile = 0x20000B,
+    Resolution = 0x40000B,
+    MiscSettings = 0x80040B,
+    SettingsMenu = 0x100000B,
+    StartNew = 0x200000B,
+    CloudSettingsMenu = 0x4000000,
+};
 
 class GameScreen {
   public:
@@ -39,7 +68,9 @@ class GameScreen {
     virtual ScreenType GetType() = 0;
     virtual ~GameScreen() = 0;
 
-private:
+    ScreenManager *GetScreenManager() const noexcept { return mScreenManager; }
+
+protected:
     bool mTransitionFinished;
     TimeSpan Zero;
     Vectormath::Vector2 mDrawLocation;

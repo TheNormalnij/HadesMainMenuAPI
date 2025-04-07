@@ -12,6 +12,10 @@ namespace SGG {
 class GUIAction {
   public:
     void AddCallBack(eastl::function<void __cdecl(void)> &&callBack) { mCallBacks.push_back(eastl::move(callBack)); }
+    void RemoveAll() {
+        mCallBacks.clear();
+        mCallBacks.reserve(0);
+    }
 
   private:
     eastl::vector<eastl::function<void __cdecl(void)>, eastl::allocator_forge> mCallBacks;

@@ -6,16 +6,35 @@
 #include "pch.h"
 
 #include "GamemodeScreen.h"
+#include "../libs/EASTL-forge1.51/string.h"
+#include "HookTable.h"
 
-GamemodeScreen *GamemodeScreen::internal_constructor(SGG::ScreenManager *screenManager) {
-    void *pointer = _aligned_malloc(sizeof(GamemodeScreen), std::alignment_of<GamemodeScreen>::value);
-    GamemodeScreen* self = reinterpret_cast<GamemodeScreen *(*)(void *, SGG::ScreenManager *)>(
-        HookTable::Instance().MenuScreen_costructor_ScreenManager)(pointer, screenManager);
+static uintptr_t GamemodeScreen_vtb[26];
 
-    self->Init();
-    return self;
+SGG::ScreenType GamemodeScreen::GetType_VirtImpl(GamemodeScreen*) { return SGG::ScreenType::SettingsMenu; }
+
+
+void GamemodeScreen::initialize_vft() {
+    std::memcpy(GamemodeScreen_vtb, (void *)HookTable::Instance().MenuScreen_vft, sizeof(GamemodeScreen_vtb));
+    GamemodeScreen_vtb[13] = reinterpret_cast<uintptr_t>(&GetType_VirtImpl);
 }
 
-void GamemodeScreen::Init() {
+void GamemodeScreen::iherited_constrictor() {
+    *reinterpret_cast<void**>(this) = GamemodeScreen_vtb;
+    mBlockLowerInput = true;
+    mOverPauseMenu = true;
+    CreateComponents();
+}
 
+void GamemodeScreen::CreateComponents() {
+    CreateBack(0.8);
+    eastl::string textureName{""};
+    CreateBackground(&textureName);
+    CreateTitleText(this);
+    CreateCancelButton(this);
+
+    mCancelButton->GetActivateAction().AddCallBack([this]() { ExitScreen(); });
+
+    Load("GUI/SettingsMenuScreen.sjson");
+    mTitleText->SetText("Gamemode");
 }

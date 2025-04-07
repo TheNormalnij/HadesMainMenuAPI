@@ -15,25 +15,50 @@
 #include "IRectangle.h"
 #include "Rectangle.h"
 #include "ScreenData.h"
+#include "GUIComponent.h"
+#include "GUIComponentTextBox.h"
+#include "GUIComponentButton.h"
 
 namespace SGG {
 
 class GUIComponentAnimation;
-class GUIComponentTextBox;
 class GUIComponentBox;
 class GUIComponentImage;
-class GUIComponent;
-class GUIComponentButton;
-
-struct MenuScreen_InsertCommand {
-    GUIComponent *mToInsert;
-    GUIComponent *mLocation;
-    bool mIsBefore;
-};
-static_assert(sizeof(MenuScreen_InsertCommand) == 0x18, "Size of MenuScreen is not 0x4B0");
+class InputHandler;
 
 class MenuScreen : public GameScreen, public IGUIComponentContainer {
   public:
+    virtual void OnCancel() = 0;
+    virtual void SetupControls() = 0;
+    virtual bool WasClickPressed(InputHandler *) = 0;
+    virtual void UpdateTooltip(InputHandler *, float) = 0;
+    virtual void SelectComponent(GUIComponent *, InputHandler *) = 0;
+    virtual bool NotifyComponentsOfClick(const Vectormath::Vector2 *, EControllerIndex::Enum) = 0;
+    virtual void NotifyComponentsOfDoubleClick(const Vectormath::Vector2 *, EControllerIndex::Enum) = 0;
+    virtual void PostLoad() = 0;
+    virtual void OnLanguageChanged() = 0;
+    virtual void Load(const char *sjonDefPath) = 0;
+    virtual GUIComponent *GetFirstUseableComponent() = 0;
+
+    void CreateBack(float oppacity) {
+        reinterpret_cast<void(__fastcall *)(void *, float)>(HookTable::Instance().MenuScreen_CreateBack)(this,
+                                                                                                         oppacity);
+    }
+
+    void CreateBackground(eastl::basic_string<char, eastl::allocator_forge> * textureName) {
+        reinterpret_cast<void(__fastcall *)(void *, void*)>(HookTable::Instance().MenuScreen_CreateBackground)(this, textureName);
+    }
+
+    void CreateTitleText(MenuScreen *component) {
+        reinterpret_cast<void(__fastcall *)(void *, MenuScreen *)>(HookTable::Instance().MenuScreen_CreateTitleText)(
+            this, component);
+    }
+
+    void CreateCancelButton(MenuScreen* component) {
+        reinterpret_cast<void(__fastcall *)(void *, MenuScreen *)>(HookTable::Instance().MenuScreen_CreateCancelButton)(
+            this, component);
+    }
+
     void AddComponent(GUIComponent *component) {
         reinterpret_cast<void(__fastcall *)(void *, GUIComponent **)>(HookTable::Instance().vector8x8_push)(
             &mComponents, &component);
@@ -42,9 +67,14 @@ class MenuScreen : public GameScreen, public IGUIComponentContainer {
     GUIComponentReflectionHelper &GetReflectionHelper() { return mReflectionHelper; }
 
   private:
-    using InsertCommand = MenuScreen_InsertCommand;
+    struct InsertCommand {
+        GUIComponent *mToInsert;
+        GUIComponent *mLocation;
+        bool mIsBefore;
+    };
+    static_assert(sizeof(InsertCommand) == 0x18, "Size of MenuScreen is not 0x4B0");
 
-  private:
+  protected:
     bool mUsingInfoPanel;
     bool mDidDoubleClick;
     float mInfoPanelFadeOut;
