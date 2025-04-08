@@ -13,8 +13,8 @@ class GUIAction {
   public:
     void AddCallBack(eastl::function<void __cdecl(void)> &&callBack) { mCallBacks.push_back(eastl::move(callBack)); }
     void RemoveAll() {
-        mCallBacks.clear();
-        mCallBacks.reserve(0);
+        mCallBacks.set_capacity(0);
+        mCallBacks.reset_lose_memory();
     }
 
   private:

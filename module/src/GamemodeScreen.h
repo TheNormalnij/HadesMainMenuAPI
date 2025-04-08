@@ -16,4 +16,5 @@ class GamemodeScreen : public SGG::MenuScreen {
     static SGG::ScreenType GetType_VirtImpl(GamemodeScreen *self);
 
     void CreateComponents();
+    void Close();
 };

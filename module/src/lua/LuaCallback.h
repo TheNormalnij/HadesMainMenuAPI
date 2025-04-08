@@ -5,6 +5,15 @@
 
 #pragma once
 
-#include <cstdint>
-#include <string>
-#include <windows.h>
+class lua_State;
+
+class LuaCallback {
+  public:
+
+	LuaCallback(lua_State *lusState, int stackIndex);
+   
+    void PushFunction(lua_State *lusState) const;
+
+private:
+    size_t callbackIndex;
+};

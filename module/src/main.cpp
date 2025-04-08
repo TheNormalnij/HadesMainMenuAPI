@@ -10,10 +10,16 @@
 #include "HookTable.h"
 #include "MainMenuHandler.h"
 #include "GamemodeScreen.h"
+#include "GamemodeManager.h"
+#include "lua/LuaManager.h"
 
 static std::unique_ptr<MainMenuHandler> mainMenuHandler;
 
-HADES_MOD_API void _cdecl HadesModLuaCreated(lua_State *luaState) {};
+HADES_MOD_API void _cdecl HadesModLuaCreated(lua_State *luaState) {
+    LuaManager::Initialize(luaState);
+    // Reset gamemode list and wait next MainMenuAPIAddGamemode
+    GamemodeManager::Instance().Reset();
+};
 
 HADES_MOD_API bool _cdecl HadesModInit(const IModApi *modApi) {
     if (modApi->version < MOD_API_VERSION)

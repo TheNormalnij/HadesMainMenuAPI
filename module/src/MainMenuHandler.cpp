@@ -10,12 +10,17 @@
 #include "interface/eastl_string.h"
 #include "GamemodeScreen.h"
 #include "HookedClassFactory.h"
+#include "GamemodeManager.h"
 
 MainMenuHandler::MainMenuHandler() : funHook{(void *)HookTable::Instance().MainMenuScreen_MainMenuScreen, 12 } {
     funHook.Install();
     funHook.onPostFunction = [this](SGG::MainMenuScreen *mainMenuScreen) {
         this->mainMenuScreen = mainMenuScreen;
-        this->InitializeCustomButtons();
+
+        size_t gamemodesCount = GamemodeManager::Instance().GetGamemodes().size();
+        if (gamemodesCount > 0)
+            this->InitializeCustomButtons();
+
         return mainMenuScreen;
     };
 }
@@ -26,7 +31,7 @@ void MainMenuHandler::InitializeCustomButtons() {
     exitBtn->SetLocation({exitBtnPos.mX, exitBtnPos.mY + 90});
 
     auto *gamemodeBtn = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(mainMenuScreen);
-    gamemodeBtn->Load(&exitBtn->GetComponentDara());
+    gamemodeBtn->Load(&exitBtn->GetComponentData());
 
     gamemodeBtn->SetLocation(exitBtnPos);
     gamemodeBtn->SetParent(mainMenuScreen);

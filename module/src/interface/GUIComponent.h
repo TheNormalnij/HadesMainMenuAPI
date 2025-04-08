@@ -79,7 +79,7 @@ class GUIComponent {
     virtual ~GUIComponent() = 0;
 
     Vectormath::Vector2 GetLocation() const noexcept { return mLocation; };
-    const ComponentData &GetComponentDara() const noexcept { return mData; };
+    const ComponentData &GetComponentData() const noexcept { return mData; };
 
     GUIAction &GetActivateAction() noexcept { return mOnActivated; };
 
