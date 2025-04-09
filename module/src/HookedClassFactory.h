@@ -7,6 +7,8 @@
 
 #include "HookTable.h"
 
+#include "GamemodeScreen.h"
+
 class HookedClassFactory {
   public:
     template <typename T, typename... Args> static T *Create(Args... args);
@@ -15,6 +17,11 @@ class HookedClassFactory {
     static SGG::GUIComponentButton *Create<SGG::GUIComponentButton>(SGG::MenuScreen *screenManager) {
         auto constructorPos = HookTable::Instance().GUIComponentButton_GUIComponentButton;
         return CreateHooked<SGG::GUIComponentButton>(constructorPos, screenManager);
+    }
+
+    template <> static SGG::MenuScreen *Create<SGG::MenuScreen>(SGG::ScreenManager *screenManager) {
+        auto constructorPos = HookTable::Instance().MenuScreen_constructor_ScreenManager;
+        return CreateHooked<SGG::MenuScreen>(constructorPos, screenManager);
     }
 
     template <> static GamemodeScreen *Create<GamemodeScreen>(SGG::ScreenManager *screenMamaner) {

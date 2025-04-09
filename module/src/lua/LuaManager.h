@@ -5,15 +5,18 @@
 
 #pragma once
 
-#include "LuaFunctionDefs.h"
+#include "LuaGamemodeFunctionDefs.h"
+#include "LuaGUIFunctionDefs.h"
 
 class lua_State;
 
 class LuaManager {
   public:
     static void Initialize(lua_State *state) {
-        LuaFunctionDefs::Load(state);
         luaState = state;
+
+        LuaGamemodeFunctionDefs::Load(state);
+        LuaGUIFunctionDefs::Load(state);
     }
 
     static lua_State *GetLuaState() { return luaState; };

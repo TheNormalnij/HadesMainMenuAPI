@@ -14,12 +14,12 @@
 
 MainMenuHandler::MainMenuHandler() : funHook{(void *)HookTable::Instance().MainMenuScreen_MainMenuScreen, 12 } {
     funHook.Install();
-    funHook.onPostFunction = [this](SGG::MainMenuScreen *mainMenuScreen) {
-        this->mainMenuScreen = mainMenuScreen;
+    funHook.onPostFunction = [this](SGG::MainMenuScreen *menuScreen) {
+        mainMenuScreen = menuScreen;
 
         size_t gamemodesCount = GamemodeManager::Instance().GetGamemodes().size();
         if (gamemodesCount > 0)
-            this->InitializeCustomButtons();
+            InitializeCustomButtons();
 
         return mainMenuScreen;
     };

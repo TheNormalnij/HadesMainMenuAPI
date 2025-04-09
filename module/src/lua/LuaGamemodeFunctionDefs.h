@@ -7,7 +7,7 @@
 
 class lua_State;
 
-class LuaFunctionDefs {
+class LuaGamemodeFunctionDefs {
   public:
     static void Load(lua_State *L);
 };

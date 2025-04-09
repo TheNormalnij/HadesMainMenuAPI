@@ -8,12 +8,10 @@
 #include <memory>
 #include "../include/HadesModApi.h"
 #include "HookTable.h"
-#include "MainMenuHandler.h"
+#include "LibraryComponents.h"
 #include "GamemodeScreen.h"
 #include "GamemodeManager.h"
 #include "lua/LuaManager.h"
-
-static std::unique_ptr<MainMenuHandler> mainMenuHandler;
 
 HADES_MOD_API void _cdecl HadesModLuaCreated(lua_State *luaState) {
     LuaManager::Initialize(luaState);
@@ -28,7 +26,7 @@ HADES_MOD_API bool _cdecl HadesModInit(const IModApi *modApi) {
     HookTable::Instance().Init(modApi->GetSymbolAddress);
 
     GamemodeScreen::initialize_vft();
-    mainMenuHandler = std::make_unique<MainMenuHandler>();
+    LibraryComponents::Initialize();
     return true;
 };
 

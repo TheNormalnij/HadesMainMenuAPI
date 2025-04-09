@@ -11,9 +11,11 @@
 class MainMenuHandler {
   public:
     MainMenuHandler();
+    ~MainMenuHandler() = default;
 
     void AddGamemode(const char *name) { gamemodes.push_back(name); }
     void InitializeCustomButtons();
+    SGG::MainMenuScreen *GetMainMenu() const noexcept { return mainMenuScreen; };
 
 private:
     FunctionHook<"sgg::MainMenuScreen::MainMenuScreen", SGG::MainMenuScreen *, SGG::MainMenuScreen *, void *, void *>

@@ -4,7 +4,7 @@
 //
 
 #include "pch.h"
-#include "LuaFunctionDefs.h"
+#include "LuaGamemodeFunctionDefs.h"
 #include "GamemodeManager.h"
 #include "lua.hpp"
 #include "LuaCallback.h"
@@ -39,7 +39,7 @@ static int MainMenuAPIAddGamemode(lua_State *L) {
     return 0;
 }
 
-void LuaFunctionDefs::Load(lua_State* L) {
+void LuaGamemodeFunctionDefs::Load(lua_State* L) {
     #define REGISTER(fun) lua_register(L, #fun, fun)
 
     REGISTER(MainMenuAPIGetSelectedGamemode);
