@@ -7,6 +7,8 @@
 
 #include "../include/HadesModApi.h"
 
+#define GET_HOOK(name, type) (reinterpret_cast<type>(HookTable::Instance().name))
+
 struct HookTable {
     static HookTable& Instance();
     void Init(IModApi::GetSymbolAddress_t GetSymbolAddress);
@@ -26,4 +28,6 @@ struct HookTable {
     uintptr_t vector8x8_push;
     uintptr_t GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton;
     uintptr_t ScreenManager_AddScreen_screen;
+
+    uintptr_t ScreenData_ReadXml;
 };

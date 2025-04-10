@@ -7,7 +7,7 @@
 
 class lua_State;
 
-class LuaGUIFunctionDefs {
+class LuaGUIComponentButtonFunctionDefs {
   public:
     static void Load(lua_State *L);
 };

@@ -64,7 +64,11 @@ class MenuScreen : public GameScreen, public IGUIComponentContainer {
             &mComponents, &component);
     }
 
+    ScreenData &GetScreenData() noexcept { return mData; };
+
     GUIComponentReflectionHelper &GetReflectionHelper() { return mReflectionHelper; }
+
+    GUIComponentButton *GetCancelButton() const noexcept { return mCancelButton; };
 
   private:
     struct InsertCommand {

@@ -19,12 +19,25 @@ template <size_t N> struct HookNameStr {
 template <HookNameStr functionName, typename ReturnT, typename... Args> class FunctionHook {
   public:
     FunctionHook(void *dest, size_t hookSize) : hookPos{dest}, hookSize{hookSize} { instance = this; };
+    ~FunctionHook() { Uninstall(); }
 
     void Install() {
+        if (installed)
+            return;
+
         BackupOriginalCode();
         InitializeJumpCode();
         CreateJump();
+        installed = true;
     };
+
+    void Uninstall() {
+        if (!installed)
+            return;
+
+        RestoreOriginalCode();
+        installed = false;
+    }
 
   private:
     void BackupOriginalCode() {
@@ -77,6 +90,7 @@ template <HookNameStr functionName, typename ReturnT, typename... Args> class Fu
   private:
     void *hookPos;
     size_t hookSize;
+    bool installed{};
 
     std::vector<uint8_t> overridedData{};
     std::vector<uint8_t> patch{};

@@ -5,8 +5,18 @@
 
 #pragma once
 
+#include "HookTable.h"
+
 namespace SGG {
+class MenuScreen;
+
 class ScreenData {
+  public:
+    // This fucntion reads json
+    void ReadXml(MenuScreen *menuScreen, const char *path) {
+        GET_HOOK(ScreenData_ReadXml, void(__fastcall *)(void *, void *, const char *))(this, menuScreen, path);
+    }
+
   private:
     char pad_0[0x118];
 };

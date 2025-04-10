@@ -7,14 +7,7 @@
 
 class lua_State;
 
-// TODO free memory
-class LuaCallback {
+class LuaMenuScreenFunctionDefs {
   public:
-
-	LuaCallback(lua_State *lusState, int stackIndex);
-   
-    void PushFunction(lua_State *lusState) const;
-
-private:
-    size_t callbackIndex;
+    static void Load(lua_State *L);
 };

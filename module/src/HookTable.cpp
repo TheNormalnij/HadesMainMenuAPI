@@ -26,5 +26,7 @@ void HookTable::Init(IModApi::GetSymbolAddress_t GetSymbolAddress) {
         "eastl::stack<sgg::IUndoRedoRecord *,eastl::vector<sgg::IUndoRedoRecord *,eastl::allocator_forge> >::push");
     GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton = GetSymbolAddress("sgg::GUIComponentReflectionHelper::ReflectComponent<sgg::GUIComponentButton *>");
     ScreenManager_AddScreen_screen = GetSymbolAddress("?AddScreen@ScreenManager@sgg@@QEAAXPEAVGameScreen@2@@Z");
+
+    ScreenData_ReadXml = GetSymbolAddress("sgg::ScreenData::ReadXml");
     return;
 }
