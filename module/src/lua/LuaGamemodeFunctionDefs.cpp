@@ -5,9 +5,10 @@
 
 #include "pch.h"
 #include "LuaGamemodeFunctionDefs.h"
+
 #include "GamemodeManager.h"
-#include "lua.hpp"
 #include "LuaCallback.h"
+#include "WrapperClasses.h"
 
 #include "HookTable.h"
 

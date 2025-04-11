@@ -5,6 +5,27 @@
 
 #pragma once
 
+#include "lua.hpp"
+
+template <class T> class LuaClassWrapper {
+  public:
+    using GameType = T;
+
+    void Set(T *data) noexcept { pointer = data; }
+    T *Get() const noexcept { return pointer; }
+
+  private:
+    T *pointer;
+};
+
+template<class T>
+static T *NewUserData(lua_State *L) {
+    auto *userdata = static_cast<T *>(lua_newuserdata(L, sizeof(T)));
+    luaL_getmetatable(L, T::LuaClassMeta);
+    lua_setmetatable(L, -2);
+    return userdata;
+}
+
 static void RegisterLuaClass(lua_State *L, const luaL_Reg *functions, const char *name) {
     luaL_newmetatable(L, name);
     for (; functions->name != NULL; functions++) {
@@ -18,8 +39,12 @@ static void RegisterLuaClass(lua_State *L, const luaL_Reg *functions, const char
     lua_pop(L, 1);
 };
 
+template <class T> static T *GetUserdata(lua_State *L, int pos) {
+    return (T *)luaL_checkudata(L, pos, T::LuaClassMeta);
+};
+
 template <class T> static T *checkclass(lua_State *L, int pos) {
-    void *ud = luaL_checkudata(L, pos, T::LuaClassMeta);
+    T *ud = GetUserdata<T>(L, pos);
     luaL_argcheck(L, ud != nullptr, pos, T::LuaClassName);
-    return (T *)ud;
-}
+    return ud;
+};

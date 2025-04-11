@@ -6,6 +6,7 @@
 #pragma once
 
 #include "LuaGamemodeFunctionDefs.h"
+#include "LuaGUIComponentButtonFunctionDefs.h"
 #include "LuaMenuScreenDefs.h"
 
 class lua_State;
@@ -17,6 +18,7 @@ class LuaManager {
 
         LuaGamemodeFunctionDefs::Load(state);
         LuaMenuScreenFunctionDefs::Load(state);
+        LuaGUIComponentButtonFunctionDefs::Load(state);
     }
 
     static lua_State *GetLuaState() { return luaState; };

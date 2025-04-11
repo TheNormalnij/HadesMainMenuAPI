@@ -7,33 +7,19 @@
 
 #include "LuaMenuScreenDefs.h"
 
-#include "lua.hpp"
-
-#include "interface/GUIComponent.h"
 #include "interface/MenuScreen.h"
 
-#include "LuaClass.h"
+#include "WrapperClasses.h"
 #include "HookedClassFactory.h"
 #include "LibraryComponents.h"
 #include "LuaCallback.h"
 
-struct GuiMenuScreenUserData {
-    static constexpr const char *LuaClassMeta = "MainMenuApi.MenuScreen";
-    static constexpr const char *LuaClassName = "MenuScreen";
-
-    SGG::MenuScreen *pointer;
-};
-
 static int CreateMenuScreen(lua_State *L) {
-    GuiMenuScreenUserData *menu =
-        static_cast<GuiMenuScreenUserData *>(lua_newuserdata(L, sizeof(GuiMenuScreenUserData)));
-
-    luaL_getmetatable(L, "MainMenuApi.MenuScreen");
-    lua_setmetatable(L, -2);
+    GuiMenuScreenUserData *menuWrapper = NewUserData<GuiMenuScreenUserData>(L);
 
     auto *sceenManager = LibraryComponents::Instance()->GetMenuHandler()->GetMainMenu()->GetScreenManager();
-    menu->pointer = HookedClassFactory::Create<SGG::MenuScreen>(sceenManager);
-    sceenManager->AddScreen(menu->pointer);
+    menuWrapper->Set(HookedClassFactory::Create<SGG::MenuScreen>(sceenManager));
+    sceenManager->AddScreen(menuWrapper->Get());
     return 1;
 }
 
@@ -44,7 +30,7 @@ static int MenuScreenLoadDefenitions(lua_State* L) {
         return luaL_error(L, "Argument 2 must be a string");
     }
 
-    auto *menu = menuWrapper->pointer;
+    auto *menu = menuWrapper->Get();
     menu->GetScreenData().ReadXml(menu, lua_tostring(L, 2));
 
     return 0;
@@ -57,7 +43,7 @@ static int MenuScreenCreateBack(lua_State *L) {
         return luaL_error(L, "Argument 2 must be a number");
     }
 
-    menuWrapper->pointer->CreateBack((float)lua_tonumber(L, 2));
+    menuWrapper->Get()->CreateBack((float)lua_tonumber(L, 2));
 
     return 0;
 }
@@ -68,7 +54,7 @@ static int MenuScreenCreateBackground(lua_State *L) {
     const char *str = lua_isstring(L, 2) ? lua_tostring(L, 2) : "";
     eastl::string bgName{str};
 
-    menuWrapper->pointer->CreateBackground(&bgName);
+    menuWrapper->Get()->CreateBackground(&bgName);
 
     return 0;
 }
@@ -79,14 +65,14 @@ static int MenuScreenCreateTitleText(lua_State *L) {
     }
 
     auto *menu = static_cast<GuiMenuScreenUserData *>(lua_touserdata(L, 1));
-    menu->pointer->CreateTitleText(menu->pointer);
+    menu->Get()->CreateTitleText(menu->Get());
 
     return 0;
 }
 
 static int MenuScreenCreateCancelButton(lua_State *L) {
     auto *menuWrapper = checkclass<GuiMenuScreenUserData>(L, 1);
-    menuWrapper->pointer->CreateCancelButton(menuWrapper->pointer);
+    menuWrapper->Get()->CreateCancelButton(menuWrapper->Get());
 
     if (!lua_isfunction(L, 2)) {
         return luaL_error(L, "Argument 2 must be a function");
@@ -94,7 +80,7 @@ static int MenuScreenCreateCancelButton(lua_State *L) {
 
     LuaCallback cb{L, 2};
 
-    menuWrapper->pointer->GetCancelButton()->GetActivateAction().AddCallBack([cb, L]() {
+    menuWrapper->Get()->GetCancelButton()->GetActivateAction().AddCallBack([cb, L]() {
         cb.PushFunction(L);
         lua_pcall(L, 0, 0, 0);
     });
@@ -109,7 +95,7 @@ static int MenuScreenSetLoverInputBlock(lua_State *L) {
         return luaL_error(L, "Argument 1 must be a boolean");
     }
 
-    menuWrapper->pointer->SetLoverInputBlock(lua_toboolean(L, 2) == 1);
+    menuWrapper->Get()->SetLoverInputBlock(lua_toboolean(L, 2) == 1);
 
     return 0;
 }
@@ -117,7 +103,7 @@ static int MenuScreenSetLoverInputBlock(lua_State *L) {
 static int MenuScreenClose(lua_State *L) {
     auto *menuWrapper = checkclass<GuiMenuScreenUserData>(L, 1);
 
-    auto *menu = menuWrapper->pointer;
+    auto *menu = menuWrapper->Get();
     auto *cancelBtn = menu->GetCancelButton();
 
     menu->ExitScreen();
@@ -129,16 +115,34 @@ static int MenuScreenClose(lua_State *L) {
     return 0;
 }
 
+// menu:AddReflection(name, button)
+static int MenuScreenAddReflection(lua_State *L) {
+    auto *menuWrapper = checkclass<GuiMenuScreenUserData>(L, 1);
+    const char *name = luaL_checkstring(L, 2);
+    if (!name) {
+        return luaL_error(L, "Argument 2 should be a component name");
+    }
+
+    if (auto* button = GetUserdata<GuiComponentButtonUserData>(L, 3)) {
+        menuWrapper->Get()->GetReflectionHelper().ReflectComponent(name, button->Get());
+    } else {
+        return luaL_error(L, "Unsupported type");
+    }
+
+    return 0;
+};
+
 static const luaL_Reg menuscreen_mt[] = {
     //
     {"Create", CreateMenuScreen},
+    {"Close", MenuScreenClose},
     {"LoadDefenitions", MenuScreenLoadDefenitions},
     {"CreateBack", MenuScreenCreateBack},
     {"CreateBackground", MenuScreenCreateBackground},
     {"CreateTitleText", MenuScreenCreateTitleText},
     {"CreateCancelButton", MenuScreenCreateCancelButton},
     {"SetLowerInputBlock", MenuScreenSetLoverInputBlock},
-    {"Close", MenuScreenClose},
+    {"AddReflection", MenuScreenAddReflection},
     {nullptr, nullptr}
     //
 };
