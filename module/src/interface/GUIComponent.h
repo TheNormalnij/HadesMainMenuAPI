@@ -83,6 +83,10 @@ class GUIComponent {
 
     GUIAction &GetActivateAction() noexcept { return mOnActivated; };
 
+    void SetFadeOpacity(float opacity) { mFadeOpacity = opacity; }
+    void SetFadeDelay(float delay) { mFadeDelay = delay; }
+    void SetFadeTarget(float target) { mFadeTarget = target; }
+
   private:
     int mMouseOverSoundId;
     bool mHidden;

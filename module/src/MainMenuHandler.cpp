@@ -42,6 +42,9 @@ void MainMenuHandler::InitializeCustomButtons() {
     eastl::string gamemodeBtnText{"Credits_AlegreyaSansSCExtraBold"};
     gamemodeBtn->SetFont(&gamemodeBtnText);
     gamemodeBtn->SetTextColor(0xFFCCCCCC);
+    gamemodeBtn->SetFadeOpacity(0.0f);
+    gamemodeBtn->SetFadeTarget(1.0f);
+    gamemodeBtn->SetFadeDelay(1.05f);
 
     auto &clickHandler = gamemodeBtn->GetActivateAction();
     clickHandler.AddCallBack([this]() {
