@@ -8,9 +8,7 @@
 
 #include "GamemodeManager.h"
 #include "lua/helpers/LuaCallback.h"
-#include "lua/classes/WrapperClasses.h"
-
-#include "HookTable.h"
+#include "lua/lua.hpp"
 
 // string MainMenuAPIGetSelectedGamemode()
 static int MainMenuAPIGetSelectedGamemode(lua_State *L) {

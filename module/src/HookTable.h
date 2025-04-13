@@ -26,9 +26,16 @@ struct HookTable {
 
     uintptr_t MainMenuScreen_MainMenuScreen;
     uintptr_t MainMenuScreen_OpenProfiles;
+
     uintptr_t GUIComponentButton_GUIComponentButton;
+
+    uintptr_t GUIComponentTextBox_GUIComponentTextBox;
+
     uintptr_t vector8x8_push;
+
     uintptr_t GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton;
+    uintptr_t GUIComponentReflectionHelper_ReflectComponent_GUIComponentTextBox;
+
     uintptr_t ScreenManager_AddScreen_screen;
 
     uintptr_t ScreenData_ReadXml;

@@ -9,17 +9,19 @@
 
 #include "HookedMenuScreen.h"
 
-#include "lua/classes/WrapperClasses.h"
+#include "lua/classes/GuiMenuScreenUserData.h"
+#include "lua/classes/GuiComponentButtonUserData.h"
+#include "lua/classes/GuiComponentTextBoxUserData.h"
 #include "HookedClassFactory.h"
 #include "LibraryComponents.h"
 #include "lua/helpers/LuaCallback.h"
 
 static int CreateMenuScreen(lua_State *L) {
-    GuiMenuScreenUserData *menuWrapper = NewUserData<GuiMenuScreenUserData>(L);
-
     auto *sceenManager = LibraryComponents::Instance()->GetMenuHandler()->GetMainMenu()->GetScreenManager();
-    menuWrapper->Set(HookedClassFactory::Create<HookedMenuScreen>(sceenManager));
-    sceenManager->AddScreen(menuWrapper->Get());
+    auto *menu = HookedClassFactory::Create<HookedMenuScreen>(sceenManager);
+    sceenManager->AddScreen(menu);
+
+    NewUserData<GuiMenuScreenUserData>(L, menu);
     return 1;
 }
 
@@ -123,8 +125,10 @@ static int MenuScreenAddReflection(lua_State *L) {
         return luaL_error(L, "Argument 2 should be a component name");
     }
 
-    if (auto* button = GetUserdata<GuiComponentButtonUserData>(L, 3)) {
+    if (auto *button = GetUserdata<GuiComponentButtonUserData>(L, 3)) {
         menuWrapper->Get()->GetReflectionHelper().ReflectComponent(name, button->Get());
+    } else if (auto *text = GetUserdata<GuiComponentTextBoxUserData>(L, 3)) {
+        menuWrapper->Get()->GetReflectionHelper().ReflectComponent(name, text->Get());
     } else {
         return luaL_error(L, "Unsupported type");
     }
@@ -149,5 +153,5 @@ static const luaL_Reg menuscreen_mt[] = {
 
 void LuaMenuScreenFunctionDefs::Load(lua_State* L) {
     lua_register(L, "CreateMenuScreen", CreateMenuScreen);
-    RegisterLuaClass(L, menuscreen_mt, GuiMenuScreenUserData::LuaClassMeta);
+    RegisterLuaClass<GuiMenuScreenUserData>(L, menuscreen_mt);
 }

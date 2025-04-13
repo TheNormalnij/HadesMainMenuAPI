@@ -21,6 +21,8 @@ MainMenuAPIAddGamemode = nil
 ---@field LoadDefenitions fun(self: self, path: string)
 ---@field Close fun(self: self)
 
+---@class GUIComponentTextBox : GUIComponent
+
 ---@type fun(): MenuScreen
 CreateMenuScreen = nil
 
@@ -29,3 +31,6 @@ CreateMenuScreen = nil
 
 ---@type fun(screen: MenuScreen): GUIComponentButton
 CreateGUIComponentButton = nil
+
+---@type fun(screen: MenuScreen): GUIComponentTextBox
+CreateGUIComponentTextBox = nil

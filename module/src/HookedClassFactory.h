@@ -8,6 +8,7 @@
 #include "HookTable.h"
 
 #include "GamemodeScreen.h"
+#include "interface/Vector2.h"
 
 class HookedClassFactory {
   public:
@@ -17,6 +18,12 @@ class HookedClassFactory {
     static SGG::GUIComponentButton *Create<SGG::GUIComponentButton>(SGG::MenuScreen *screenManager) {
         auto constructorPos = HookTable::Instance().GUIComponentButton_GUIComponentButton;
         return CreateHooked<SGG::GUIComponentButton>(constructorPos, screenManager);
+    }
+
+    template <> static SGG::GUIComponentTextBox *Create<SGG::GUIComponentTextBox>() {
+        auto constructorPos = HookTable::Instance().GUIComponentTextBox_GUIComponentTextBox;
+        const Vectormath::Vector2 pos{0.f, 0.f};
+        return CreateHooked<SGG::GUIComponentTextBox>(constructorPos, &pos);
     }
 
     template <> static GamemodeScreen *Create<GamemodeScreen>(SGG::ScreenManager *screenMamaner) {

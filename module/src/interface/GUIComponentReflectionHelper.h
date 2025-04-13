@@ -9,12 +9,19 @@
 
 namespace SGG {
 class GUIComponentButton;
+class GUIComponentTextBox;
 
 class GUIComponentReflectionHelper {
 public:
     void ReflectComponent(const char *name, GUIComponentButton *component) {
         reinterpret_cast<void (*)(void *, const char *, GUIComponentButton *)>(
             HookTable::Instance().GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton)(this, name,
+                                                                                                    component);
+    }
+
+    void ReflectComponent(const char *name, GUIComponentTextBox *component) {
+        reinterpret_cast<void (*)(void *, const char *, GUIComponentTextBox *)>(
+            HookTable::Instance().GUIComponentReflectionHelper_ReflectComponent_GUIComponentTextBox)(this, name,
                                                                                                     component);
     }
 

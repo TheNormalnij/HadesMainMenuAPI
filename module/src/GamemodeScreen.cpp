@@ -11,6 +11,8 @@
 #include "GamemodeManager.h"
 #include "HookedClassFactory.h"
 
+// TODO: Move this to Lua
+
 void GamemodeScreen::IheritedConstrictor(SGG::ScreenManager* screenManager) {
     HookedMenuScreen::IheritedConstrictor(screenManager);
     mBlockLowerInput = true;

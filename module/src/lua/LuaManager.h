@@ -9,6 +9,8 @@
 #include "defs/LuaGUIComponentButtonFunctionDefs.h"
 #include "defs/LuaMenuScreenDefs.h"
 #include "defs/LuaMainMenuScreenFunctionDefs.h"
+#include "defs/LuaGUIComponentFunctionDefs.h"
+#include "defs/LuaGUIComponentTextBoxFunctionDefs.h"
 
 #include "HookTable.h"
 
@@ -20,10 +22,12 @@ class LuaManager {
     static void Initialize(lua_State *state) {
         luaState = state;
 
+        LuaGUIComponentFunctionDefs::Load(state);
         LuaGamemodeFunctionDefs::Load(state);
         LuaMenuScreenFunctionDefs::Load(state);
         LuaGUIComponentButtonFunctionDefs::Load(state);
         LuaMainMenuScreenFunctionDefs::Load(state);
+        LuaGUIComponentTextBoxFunctionDefs::Load(state);
     }
 
     static lua_State *GetLuaState() { return luaState; };

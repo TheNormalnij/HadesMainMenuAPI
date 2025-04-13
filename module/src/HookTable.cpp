@@ -23,9 +23,16 @@ void HookTable::Init(IModApi::GetSymbolAddress_t GetSymbolAddress) {
     MainMenuScreen_MainMenuScreen = GetSymbolAddress("sgg::MainMenuScreen::MainMenuScreen");
     MainMenuScreen_OpenProfiles = GetSymbolAddress("sgg::MainMenuScreen::OpenProfiles");
     GUIComponentButton_GUIComponentButton = GetSymbolAddress("sgg::GUIComponentButton::GUIComponentButton");
+
+    GUIComponentTextBox_GUIComponentTextBox = GetSymbolAddress("??0GUIComponentTextBox@sgg@@QEAA@AEBVVector2@Vectormath@@@Z");
+
     vector8x8_push = GetSymbolAddress(
         "eastl::stack<sgg::IUndoRedoRecord *,eastl::vector<sgg::IUndoRedoRecord *,eastl::allocator_forge> >::push");
+
     GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton = GetSymbolAddress("sgg::GUIComponentReflectionHelper::ReflectComponent<sgg::GUIComponentButton *>");
+    GUIComponentReflectionHelper_ReflectComponent_GUIComponentTextBox =
+        GetSymbolAddress("sgg::GUIComponentReflectionHelper::ReflectComponent<sgg::GUIComponentTextBox *>");
+
     ScreenManager_AddScreen_screen = GetSymbolAddress("?AddScreen@ScreenManager@sgg@@QEAAXPEAVGameScreen@2@@Z");
 
     ScreenData_ReadXml = GetSymbolAddress("sgg::ScreenData::ReadXml");

@@ -11,11 +11,9 @@
 class LibraryComponents {
   public:
     LibraryComponents();
-      
-      static void Initialize();
+
+    static void Initialize();
     static LibraryComponents *Instance() noexcept { return instance.get(); }
-
-
 
     MainMenuHandler *GetMenuHandler() const noexcept { return mainMenuHandler.get(); };
 
