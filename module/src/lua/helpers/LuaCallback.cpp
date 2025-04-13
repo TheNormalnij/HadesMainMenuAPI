@@ -5,8 +5,8 @@
 
 #include "pch.h"
 
-#include "LuaCallback.h"
-#include "lua.hpp"
+#include "lua/helpers/LuaCallback.h"
+#include "lua/lua.hpp"
 
 constexpr char const *szUniqueCallbackStorage = "_MainMenuAPICB";
 

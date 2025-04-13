@@ -7,12 +7,15 @@
 
 #include "MenuScreen.h"
 #include "GUIComponentButton.h"
+#include "HookTable.h"
 
 namespace SGG {
 class MainMenuScreen : public MenuScreen {
   public:
     GUIComponentButton *GetPlayGameButton() const noexcept { return mPlayGameButton; };
     GUIComponentButton *GetExitButton() const noexcept { return mExitButton; };
+
+    void OpenProfiles() { GET_HOOK(MainMenuScreen_OpenProfiles, void(__fastcall *)(void *))(this); }
 
   private:
     bool mPressStartMode;

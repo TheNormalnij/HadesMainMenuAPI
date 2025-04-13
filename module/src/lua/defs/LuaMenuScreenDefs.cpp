@@ -7,18 +7,18 @@
 
 #include "LuaMenuScreenDefs.h"
 
-#include "interface/MenuScreen.h"
+#include "HookedMenuScreen.h"
 
-#include "WrapperClasses.h"
+#include "lua/classes/WrapperClasses.h"
 #include "HookedClassFactory.h"
 #include "LibraryComponents.h"
-#include "LuaCallback.h"
+#include "lua/helpers/LuaCallback.h"
 
 static int CreateMenuScreen(lua_State *L) {
     GuiMenuScreenUserData *menuWrapper = NewUserData<GuiMenuScreenUserData>(L);
 
     auto *sceenManager = LibraryComponents::Instance()->GetMenuHandler()->GetMainMenu()->GetScreenManager();
-    menuWrapper->Set(HookedClassFactory::Create<SGG::MenuScreen>(sceenManager));
+    menuWrapper->Set(HookedClassFactory::Create<HookedMenuScreen>(sceenManager));
     sceenManager->AddScreen(menuWrapper->Get());
     return 1;
 }

@@ -16,6 +16,7 @@ struct HookTable {
     uintptr_t _aligned_malloc;
 
     uintptr_t MenuScreen_constructor;
+    uintptr_t MenuScreen_destructor;
     uintptr_t MenuScreen_constructor_ScreenManager;
     uintptr_t MenuScreen_CreateBack;
     uintptr_t MenuScreen_CreateBackground;
@@ -24,10 +25,13 @@ struct HookTable {
     uintptr_t MenuScreen_vft;
 
     uintptr_t MainMenuScreen_MainMenuScreen;
+    uintptr_t MainMenuScreen_OpenProfiles;
     uintptr_t GUIComponentButton_GUIComponentButton;
     uintptr_t vector8x8_push;
     uintptr_t GUIComponentReflectionHelper_ReflectComponent_GUIComponentButton;
     uintptr_t ScreenManager_AddScreen_screen;
 
     uintptr_t ScreenData_ReadXml;
+
+    uintptr_t lua_pcallk;
 };

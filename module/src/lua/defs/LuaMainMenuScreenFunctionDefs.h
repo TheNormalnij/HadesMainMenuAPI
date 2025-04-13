@@ -5,12 +5,9 @@
 
 #pragma once
 
-#include "HookedMenuScreen.h"
+class lua_State;
 
-class GamemodeScreen : public HookedMenuScreen {
+class LuaMainMenuScreenFunctionDefs {
   public:
-    void IheritedConstrictor(SGG::ScreenManager *screenManager);
-
-  private:
-    void CreateComponents();
+    static void Load(lua_State *L);
 };

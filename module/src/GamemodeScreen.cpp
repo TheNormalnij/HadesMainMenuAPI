@@ -11,17 +11,8 @@
 #include "GamemodeManager.h"
 #include "HookedClassFactory.h"
 
-static uintptr_t GamemodeScreen_vtb[26];
-
-SGG::ScreenType GamemodeScreen::GetType_VirtImpl(GamemodeScreen*) { return SGG::ScreenType::SettingsMenu; }
-
-void GamemodeScreen::initialize_vft() {
-    std::memcpy(GamemodeScreen_vtb, (void *)HookTable::Instance().MenuScreen_vft, sizeof(GamemodeScreen_vtb));
-    GamemodeScreen_vtb[13] = reinterpret_cast<uintptr_t>(&GetType_VirtImpl);
-}
-
-void GamemodeScreen::iherited_constrictor() {
-    *reinterpret_cast<void**>(this) = GamemodeScreen_vtb;
+void GamemodeScreen::IheritedConstrictor(SGG::ScreenManager* screenManager) {
+    HookedMenuScreen::IheritedConstrictor(screenManager);
     mBlockLowerInput = true;
     mOverPauseMenu = true;
     CreateComponents();
@@ -34,7 +25,7 @@ void GamemodeScreen::CreateComponents() {
     CreateTitleText(this);
     CreateCancelButton(this);
 
-    mCancelButton->GetActivateAction().AddCallBack([this]() { Close(); });
+    mCancelButton->GetActivateAction().AddCallBack([this]() { ExitScreen(); });
 
     auto *buttonTemplate = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(this);
     buttonTemplate->SetParent(this);
@@ -63,16 +54,10 @@ void GamemodeScreen::CreateComponents() {
         offsetY += 75.0f;
 
         gamemodeBtn->GetActivateAction().AddCallBack([&gamemode, this]() {
-            Close();
+            ExitScreen();
             gamemode.Activate();
         });
     }
 
     mTitleText->SetText("Gamemode");
-}
-
-void GamemodeScreen::Close() {
-    ExitScreen();
-    // I don't need to do it for another buttons. Why?
-    mCancelButton->GetActivateAction().RemoveAll();
 }

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <vector>
-#include "lua/LuaCallback.h"
+#include "lua/helpers/LuaCallback.h"
 #include "Gamemode.h"
 
 class GamemodeManager {

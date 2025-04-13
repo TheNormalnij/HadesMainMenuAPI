@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "lua/LuaCallback.h"
+#include "lua/helpers/LuaCallback.h"
 
 class Gamemode {
   public:

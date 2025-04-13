@@ -7,8 +7,8 @@
 #include "LuaGamemodeFunctionDefs.h"
 
 #include "GamemodeManager.h"
-#include "LuaCallback.h"
-#include "WrapperClasses.h"
+#include "lua/helpers/LuaCallback.h"
+#include "lua/classes/WrapperClasses.h"
 
 #include "HookTable.h"
 

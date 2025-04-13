@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "LuaClass.h"
+#include "lua/helpers/LuaClass.h"
 
 #include "interface/MenuScreen.h"
 #include "interface/GuiComponentButton.h"

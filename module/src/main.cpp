@@ -25,7 +25,7 @@ HADES_MOD_API bool _cdecl HadesModInit(const IModApi *modApi) {
 
     HookTable::Instance().Init(modApi->GetSymbolAddress);
 
-    GamemodeScreen::initialize_vft();
+    HookedMenuScreen::VTBL.Initialize();
     LibraryComponents::Initialize();
     return true;
 };

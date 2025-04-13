@@ -19,25 +19,27 @@ class HookedClassFactory {
         return CreateHooked<SGG::GUIComponentButton>(constructorPos, screenManager);
     }
 
-    template <> static SGG::MenuScreen *Create<SGG::MenuScreen>(SGG::ScreenManager *screenManager) {
-        auto constructorPos = HookTable::Instance().MenuScreen_constructor_ScreenManager;
-        return CreateHooked<SGG::MenuScreen>(constructorPos, screenManager);
+    template <> static GamemodeScreen *Create<GamemodeScreen>(SGG::ScreenManager *screenMamaner) {
+        auto *instance = Allocate<GamemodeScreen>();
+        instance->IheritedConstrictor(screenMamaner);
+        return instance;
     }
 
-    template <> static GamemodeScreen *Create<GamemodeScreen>(SGG::ScreenManager *screenMamaner) {
-        auto constructorPos = HookTable::Instance().MenuScreen_constructor_ScreenManager;
-        auto *instance = CreateHooked<GamemodeScreen>(constructorPos, screenMamaner);
-        instance->iherited_constrictor();
+    template <> static HookedMenuScreen *Create<HookedMenuScreen>(SGG::ScreenManager *screenMamaner) {
+        auto *instance = Allocate<HookedMenuScreen>();
+        instance->IheritedConstrictor(screenMamaner);
         return instance;
     }
 
   private:
     template <typename T, typename... Args> static T *CreateHooked(uintptr_t constructorPos, Args... args) {
-        auto* _aligned_malloc =
-            *reinterpret_cast<void *(__cdecl **)(size_t, size_t)>(HookTable::Instance()._aligned_malloc);
-
-        void *pointer = _aligned_malloc(sizeof(T), std::alignment_of<T>::value);
-        return reinterpret_cast<T *(*)(void *, Args...)>(constructorPos)(pointer, args...);
+        return reinterpret_cast<T *(*)(void *, Args...)>(constructorPos)(Allocate<T>(), args...);
     };
 
+    template <class T> static T* Allocate() {
+        auto *_aligned_malloc =
+            *reinterpret_cast<void *(__cdecl **)(size_t, size_t)>(HookTable::Instance()._aligned_malloc);
+
+        return reinterpret_cast<T *>(_aligned_malloc(sizeof(T), std::alignment_of<T>::value));
+    }
 };

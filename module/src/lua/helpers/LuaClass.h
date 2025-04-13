@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "lua.hpp"
+#include "lua/lua.hpp"
 
 template <class T> class LuaClassWrapper {
   public:
