@@ -14,5 +14,5 @@ void Gamemode::Activate() const {
     lua_State *L = LuaManager::GetLuaState();
     callback.PushFunction(L);
     lua_pushstring(L, name.c_str());
-    lua_pcall(L, 1, 0, 0);
+    LuaManager::lua_pcallk(L, 1, 0, 0, 0, 0);
 }
