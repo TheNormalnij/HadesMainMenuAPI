@@ -56,7 +56,7 @@ void GamemodeScreen::CreateComponents() {
         offsetY += 75.0f;
 
         gamemodeBtn->GetActivateAction().AddCallBack([&gamemode, this]() {
-            ExitScreen();
+            //ExitScreen();
             gamemode.Activate();
         });
     }
