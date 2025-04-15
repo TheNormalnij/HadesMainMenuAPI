@@ -19,7 +19,7 @@ MainMenuAPIAddGamemode = nil
 ---@field CreateCancelButton fun(self: self, handler: fun())
 ---@field AddReflection fun(self: self, name: string, component: GUIComponent)
 ---@field LoadDefenitions fun(self: self, path: string)
----@field Close fun(self: self)
+---@field ExitScreen fun(self: self)
 
 ---@class GUIComponentTextBox : GUIComponent
 

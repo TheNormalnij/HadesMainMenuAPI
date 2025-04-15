@@ -102,18 +102,13 @@ static int MenuScreenSetLoverInputBlock(lua_State *L) {
     return 0;
 }
 
-static int MenuScreenClose(lua_State *L) {
+static int MenuScreenExitScreen(lua_State *L) {
     auto *menuWrapper = checkclass<GuiMenuScreenUserData>(L, 1);
 
     auto *menu = menuWrapper->Get();
     auto *cancelBtn = menu->GetCancelButton();
 
     menu->ExitScreen();
-    
-    // shit
-    if (cancelBtn)
-        cancelBtn->GetActivateAction().RemoveAll();
-
     return 0;
 }
 
@@ -139,7 +134,7 @@ static int MenuScreenAddReflection(lua_State *L) {
 static const luaL_Reg menuscreen_mt[] = {
     //
     {"Create", CreateMenuScreen},
-    {"Close", MenuScreenClose},
+    {"ExitScreen", MenuScreenExitScreen},
     {"LoadDefenitions", MenuScreenLoadDefenitions},
     {"CreateBack", MenuScreenCreateBack},
     {"CreateBackground", MenuScreenCreateBackground},
