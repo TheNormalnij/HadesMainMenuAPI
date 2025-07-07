@@ -23,6 +23,7 @@ void HookTable::Init(IModApi::GetSymbolAddress_t GetSymbolAddress) {
     MainMenuScreen_MainMenuScreen = GetSymbolAddress("sgg::MainMenuScreen::MainMenuScreen");
     MainMenuScreen_OpenProfiles = GetSymbolAddress("sgg::MainMenuScreen::OpenProfiles");
     GUIComponentButton_GUIComponentButton = GetSymbolAddress("sgg::GUIComponentButton::GUIComponentButton");
+    GUIComponentButton_UseDefaultText = GetSymbolAddress("?UseDefaultText@GUIComponentButton@sgg@@UEAAXXZ");
 
     GUIComponentTextBox_GUIComponentTextBox = GetSymbolAddress("??0GUIComponentTextBox@sgg@@QEAA@AEBVVector2@Vectormath@@@Z");
 

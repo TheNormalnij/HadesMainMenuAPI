@@ -6,10 +6,16 @@
 #pragma once
 
 #include "GUIComponent.h"
+#include "HookTable.h"
 
 namespace SGG {
 
 class GUIComponentButton : public GUIComponent {
+  public:
+    void UseDefaultText() {
+        reinterpret_cast<void (*)(void *)>(HookTable::Instance().GUIComponentButton_UseDefaultText)(this);
+    }
+
   private:
     char pad[0x98];
 };

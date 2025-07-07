@@ -32,10 +32,12 @@ void MainMenuHandler::InitializeCustomButtons() {
 
     auto *gamemodeBtn = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(mainMenuScreen);
     gamemodeBtn->Load(&exitBtn->GetComponentData());
+    auto& componentDef = gamemodeBtn->GetComponentData().GetDef();
+    componentDef.mHelpTextId = "MainMenuAPI_SelectGamemode";
 
     gamemodeBtn->SetLocation(exitBtnPos);
     gamemodeBtn->SetParent(mainMenuScreen);
-    gamemodeBtn->SetText("Select  gamemode");
+    gamemodeBtn->UseDefaultText();
     mainMenuScreen->AddComponent(gamemodeBtn);
     //mainMenuScreen->GetReflectionHelper().ReflectComponent("mGamemode", gamemodeBtn);
 

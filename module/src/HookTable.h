@@ -28,6 +28,7 @@ struct HookTable {
     uintptr_t MainMenuScreen_OpenProfiles;
 
     uintptr_t GUIComponentButton_GUIComponentButton;
+    uintptr_t GUIComponentButton_UseDefaultText;
 
     uintptr_t GUIComponentTextBox_GUIComponentTextBox;
 

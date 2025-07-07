@@ -61,5 +61,8 @@ void GamemodeScreen::CreateComponents() {
         });
     }
 
-    mTitleText->SetText("Gamemode");
+    auto &componentDef = mTitleText->GetComponentData().GetDef();
+    componentDef.mHelpTextId = "MainMenuScreen_PlayGame";
+
+    mTitleText->UseDefaultText();
 }
