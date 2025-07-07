@@ -10,6 +10,8 @@ MainMenuAPIAddGamemode = nil
 
 ---@class GUIComponent
 ---@field SetText fun(self: self, text: string)
+---@field SetTextLocalizationKey fun(self: self, key: string)
+---@field UseDefaultText fun(self: self)
 
 ---@class MenuScreen
 ---@field CreateBack fun(self: self, oppacity: number)

@@ -20,6 +20,24 @@ static int SetText(lua_State *L) {
     return 0;
 }
 
+static int SetTextLocalizationKey(lua_State *L) {
+    auto *wrapper = checkclass<GuiComponentUserData>(L, 1);
+    const char *text = luaL_checkstring(L, 2);
+    if (!text) {
+        return luaL_error(L, "Argument 2 should be text");
+    }
+
+    auto &componentDef = wrapper->Get()->GetComponentData().GetDef();
+    componentDef.mHelpTextId = text;
+    return 0;
+}
+
+static int UseDefaultText(lua_State *L) {
+    auto *wrapper = checkclass<GuiComponentUserData>(L, 1);
+    wrapper->Get()->UseDefaultText();
+    return 0;
+}
+
 static int AddActivationHandler(lua_State *L) {
     auto *wrapper = checkclass<GuiComponentUserData>(L, 1);
     if (!lua_isfunction(L, 2)) {
@@ -38,6 +56,8 @@ static int AddActivationHandler(lua_State *L) {
 static const luaL_Reg metatable[] = {
     //
     {"SetText", SetText},
+    {"UseDefaultText", UseDefaultText},
+    {"SetTextLocalizationKey", SetTextLocalizationKey},
     {"AddActivationHandler", AddActivationHandler},
     {nullptr, nullptr}
     //
