@@ -15,11 +15,15 @@
 // GUIComponentButton CreateGUIComponentButton(MenuScreen parent)
 static int CreateGUIComponentButton(lua_State* L) {
     auto *menuWrapper = checkclass<GuiMenuScreenUserData>(L, 1);
-    auto *gamemodeBtn = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(menuWrapper->Get());
-    gamemodeBtn->SetParent(menuWrapper->Get());
-    menuWrapper->Get()->AddComponent(gamemodeBtn);
+    auto *newBtn = HookedClassFactory::Create<SGG::GUIComponentButton, SGG::MenuScreen *>(menuWrapper->Get());
 
-    NewUserData<GuiComponentButtonUserData>(L, gamemodeBtn);
+    auto& compData = newBtn->GetComponentData();
+    compData.SetCreated(true);
+
+    newBtn->SetParent(menuWrapper->Get());
+    menuWrapper->Get()->AddComponent(newBtn);
+
+    NewUserData<GuiComponentButtonUserData>(L, newBtn);
     return 1;
 }
 

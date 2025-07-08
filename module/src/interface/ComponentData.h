@@ -11,6 +11,8 @@ namespace SGG {
 class ComponentData {
   public:
     ComponentDataDef &GetDef() { return mDef; };
+    void SetCreated(bool flag) { mCreated = flag; };
+
   private:
     bool mCreated;
     eastl::basic_string<char, eastl::allocator_forge> mName;
