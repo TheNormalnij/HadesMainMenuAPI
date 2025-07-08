@@ -27,8 +27,17 @@ static int SetTextLocalizationKey(lua_State *L) {
         return luaL_error(L, "Argument 2 should be text");
     }
 
+    bool updateText = true;
+    if (lua_isboolean(L, 3)) {
+        updateText = lua_toboolean(L, 3);
+    }
+
     auto &componentDef = wrapper->Get()->GetComponentData().GetDef();
     componentDef.mHelpTextId = text;
+
+    if (updateText) {
+        wrapper->Get()->UseDefaultText();
+    }
     return 0;
 }
 
