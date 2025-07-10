@@ -19,6 +19,8 @@
 #include "GUIComponentTextBox.h"
 #include "GUIComponentButton.h"
 
+constexpr size_t INVALID_COMPONENT_POS = -1;
+
 namespace SGG {
 
 class GUIComponentAnimation;
@@ -62,6 +64,26 @@ class MenuScreen : public GameScreen, public IGUIComponentContainer {
     void AddComponent(GUIComponent *component) {
         reinterpret_cast<void(__fastcall *)(void *, GUIComponent **)>(HookTable::Instance().vector8x8_push)(
             &mComponents, &component);
+    }
+
+    void MoveComponentComponentBack(GUIComponent *component, size_t up) {
+        size_t pos = GetComponentPosition(component);
+        if (pos == INVALID_COMPONENT_POS)
+            return;
+
+        const size_t targetPos = pos - up;
+        for (size_t i = pos - 1; up > 0; i--, up--) {
+            mComponents[i + 1] = mComponents[i];
+        }
+        mComponents[targetPos] = component;
+    }
+
+    size_t GetComponentPosition(GUIComponent *component) const noexcept {
+        for (size_t i = 0; i < mComponents.size(); i++) {
+            if (component == mComponents[i])
+                return i;
+        }
+        return INVALID_COMPONENT_POS;
     }
 
     ScreenData &GetScreenData() noexcept { return mData; };

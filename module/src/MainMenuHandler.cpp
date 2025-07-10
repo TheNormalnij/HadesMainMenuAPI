@@ -39,7 +39,7 @@ void MainMenuHandler::InitializeCustomButtons() {
     gamemodeBtn->SetParent(mainMenuScreen);
     gamemodeBtn->UseDefaultText();
     mainMenuScreen->AddComponent(gamemodeBtn);
-    //mainMenuScreen->GetReflectionHelper().ReflectComponent("mGamemode", gamemodeBtn);
+    mainMenuScreen->MoveComponentComponentBack(gamemodeBtn, 20);
 
     eastl::string gamemodeBtnText{"Credits_AlegreyaSansSCExtraBold"};
     gamemodeBtn->SetFont(&gamemodeBtnText);
